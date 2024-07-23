@@ -31,6 +31,17 @@ class CheckingAccount(BankAccount):
         else:
             print("Overdraft limit exceeded")
 
+
+class SavingsAccount(BankAccount):
+    def __init__(self, account_number, owner, balance=0, interest_rate=0.02):
+        super().__init__(account_number, owner, balance)
+        self.interest_rate = interest_rate
+
+    def add_interest(self):
+        self.balance += self.balance * self.interest_rate
+        print(f"Interest added. New balance: {self.balance}")
+
+
 class Bank:
     def __init__(self, name):
         self.name = name
@@ -51,17 +62,23 @@ class Bank:
         print(f"Total funds in the bank: {total}")
         return total
 
+
 # Создаем счета
 checking = CheckingAccount("CA54321", "Bob", 500, 200)
+savings = SavingsAccount("SA12345", "Alice", 1000, 0.03)
 
 # Создаем банк и добавляем счета
 bank = Bank("MyBank")
 bank.add_account(checking)
+bank.add_account(savings)
 
 # Действия с счетами
-
 checking.withdraw(600)
 checking.deposit(300)
+
+savings.deposit(500)
+savings.add_interest()
+savings.withdraw(300)
 
 # Выводим список счетов и общую сумму денег в банке
 bank.list_accounts()
